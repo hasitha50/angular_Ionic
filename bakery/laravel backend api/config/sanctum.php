@@ -15,12 +15,16 @@ return [
     |
     */
 
-    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
-        '%s%s',
-        'localhost,localhost:3000,localhost:8100,127.0.0.1,127.0.0.1:8000,127.0.0.1:8100,::1',
-        Sanctum::currentApplicationUrlWithPort(),
-        // Sanctum::currentRequestHost(),
-    ))),
+    'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', implode(',', array_merge([
+        'localhost',
+        'localhost:3000',
+        'localhost:8100',
+        '127.0.0.1',
+        '127.0.0.1:8000',
+        '127.0.0.1:8100',
+        '::1',
+    ],array_map(fn($i) => "192.168.8.$i", range(1, 255)))))),  // allows 192.168.8.1:8000 to 192.168.8.255:8000
+
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +68,7 @@ return [
 
     'token_prefix' => env('SANCTUM_TOKEN_PREFIX', ''),
 
-     /*
+    /*
     |--------------------------------------------------------------------------
     | Sanctum Route prefix
     |--------------------------------------------------------------------------
@@ -73,7 +77,7 @@ return [
 
     'prefix' => 'api',
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | Sanctum Middleware

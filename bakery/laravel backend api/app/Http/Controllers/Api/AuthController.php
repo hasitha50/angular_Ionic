@@ -22,7 +22,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             session()->regenerate();   
 
-            return response()->json(['message' => __('Welcome!')]);
+            return response()->json(['message' => __('Welcome!'),'user'=>Auth::user()]);
         }
 
         throw ValidationException::withMessages([
@@ -34,15 +34,15 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'type' => 'required|in:Business,Individual,AppOwner',
-            'phone' => 'required|string|unique:users,phone',
+            'type' => 'nullable|in:Business,Individual,AppOwner',
+            'phone' => 'nullable|string|unique:users,phone',
             'email' => 'nullable|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'address' => 'nullable|string',
             'lat' => 'nullable|numeric',
             'lng' => 'nullable|numeric',
             'pincode' => 'nullable|string',
-            'image' => 'required|string',
+            'image' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -51,8 +51,7 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'type' => $request->type,
-            'role' => 'seller', // default role
+            'role' => 'buyer', // default role
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -105,19 +104,17 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
-
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['message' => 'Logged out'],200);
     }
 
 
     public function authUser(Request $request)
     {
-        // return "done";
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
         return response()->json($user );
     }
 }

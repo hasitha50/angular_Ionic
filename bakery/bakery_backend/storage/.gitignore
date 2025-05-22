@@ -1,1 +1,3 @@
 *.json
+
+!angular-ionic-test-firebase-adminsdk-fbsvc-36de2aee05.json

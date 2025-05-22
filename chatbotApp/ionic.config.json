@@ -1,0 +1,7 @@
+{
+  "name": "chatbotApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

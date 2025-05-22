@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sign In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" (ngSubmit)="signIn()" class="auth-form">
+
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input
+        formControlName="email"
+        type="email"
+        required
+        autocomplete="email"
+        spellcheck="false"
+        autocapitalize="off"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input
+        formControlName="password"
+        type="password"
+        required
+        autocomplete="current-password"
+      ></ion-input>
+    </ion-item>
+
+    <div class="form-actions">
+      <ion-button expand="block" type="submit">Sign In</ion-button>
+    </div>
+
+  </form>
+</ion-content>
